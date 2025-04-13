@@ -1,0 +1,12 @@
+{
+  "name": "invoicing-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "puppeteer-core": "^24.6.1"
+  }
+}
