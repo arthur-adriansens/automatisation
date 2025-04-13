@@ -1,12 +1,15 @@
 // SETUP
 import puppeteer from "puppeteer-core";
 import prompt from "prompt-sync";
+import "dotenv/config";
 
 const ask = prompt();
 
+console.log(process.env.CHROME_PATH);
+
 const browser = await puppeteer.launch({
     headless: false,
-    executablePath: "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+    executablePath: process.env.CHROME_PATH,
 });
 
 try {
@@ -34,7 +37,7 @@ async function main(page) {
         // Check if invoice has comments
         const comments = await page.$("table.comment_section tbody[ng-hide]");
         if (comments) {
-            console.log("Found comment, skipping...");
+            console.log("\x1b[31m%s\x1b[0m", "Found comment, manual editing required...");
             continue;
         }
 
@@ -46,7 +49,7 @@ async function main(page) {
             hasZeroPrice = await page.evaluate((cell) => cell.innerHTML == "0,00 €", price);
 
             if (hasZeroPrice) {
-                console.log("Found zero/empty invoice, skipping...");
+                console.log("\x1b[31m%s\x1b[0m", "Found zero/empty invoice, manual editing required...");
                 break;
             }
 
@@ -54,7 +57,7 @@ async function main(page) {
         }
 
         if (!hasZeroPrice && !comments) {
-            console.log("No issues found, clicking button...");
+            console.log("\x1b[32m%s\x1b[0m", "No issues found, clicking button...");
             await page.locator("table.invoicedetail tr[ng-show] button").click();
         }
     }
