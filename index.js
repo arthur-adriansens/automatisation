@@ -5,8 +5,6 @@ import "dotenv/config";
 
 const ask = prompt();
 
-console.log(process.env.CHROME_PATH);
-
 const browser = await puppeteer.launch({
     headless: false,
     executablePath: process.env.CHROME_PATH,
@@ -17,7 +15,7 @@ try {
 
     const page = await browser.newPage();
     await page.setViewport({ deviceScaleFactor: 2, width: 1920, height: 1080 });
-    await page.goto("file:///C:/Users/arthu/Documents/projects/git%20clones/automatisation/replica.html", { waitUntil: "networkidle0" });
+    await page.goto(process.env.URL, { waitUntil: "networkidle0" });
 
     ask("Click on an invoice and press Enter to start...");
     await main(page);
